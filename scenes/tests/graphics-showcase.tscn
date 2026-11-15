@@ -1,0 +1,565 @@
+[gd_scene load_steps=74 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/grass_ground/albedo.jpg" id="1_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/grass_ground/normal.jpg" id="2_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/grass_ground/roughness.jpg" id="3_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/grass_ground/ao.jpg" id="4_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/dirt_path/albedo.jpg" id="5_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/dirt_path/normal.jpg" id="6_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/dirt_path/roughness.jpg" id="7_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/dirt_path/ao.jpg" id="8_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/stone_wall/albedo.jpg" id="9_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/stone_wall/normal.jpg" id="10_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/stone_wall/roughness.jpg" id="11_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/stone_wall/ao.jpg" id="12_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/wood_planks/albedo.jpg" id="13_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/wood_planks/normal.jpg" id="14_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/wood_planks/roughness.jpg" id="15_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/wood_planks/ao.jpg" id="16_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/roof_tiles/albedo.jpg" id="17_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/roof_tiles/normal.jpg" id="18_tex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/pbr/roof_tiles/roughness.jpg" id="19_tex"]
+[ext_resource type="Shader" path="res://assets/materials/water_stylized.gdshader" id="101_water"]
+[ext_resource type="Shader" path="res://assets/materials/sky_stylized.gdshader" id="102_sky"]
+[ext_resource type="PackedScene" path="res://assets/environments/kaykit-medieval/buildings/green/building_home_A_green.gltf" id="201_house"]
+[ext_resource type="PackedScene" path="res://assets/environments/kaykit-medieval/decoration/props/barrel.gltf" id="202_barrel"]
+[ext_resource type="PackedScene" path="res://assets/environments/kaykit-medieval/decoration/props/crate_A_small.gltf" id="203_crate"]
+[ext_resource type="PackedScene" path="res://assets/environments/kenney-nature/tree_cone.glb" id="204_tree"]
+[ext_resource type="PackedScene" path="res://assets/environments/kenney-nature/flower_redA.glb" id="205_flower"]
+[ext_resource type="Shader" path="res://assets/materials/terrain_splat.gdshader" id="103_splat"]
+[ext_resource type="Shader" path="res://assets/materials/wind_sway.gdshader" id="104_wind"]
+[ext_resource type="Shader" path="res://assets/materials/light_shaft.gdshader" id="105_shaft"]
+[ext_resource type="Shader" path="res://assets/materials/cloud_shadow.gdshader" id="106_cloud"]
+[ext_resource type="Shader" path="res://assets/materials/lut_grade.gdshader" id="107_lut"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/showcase/grass_blades.png" id="20_grass"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/showcase/shaft_gradient.png" id="21_shafttex"]
+[ext_resource type="Texture2D" path="res://assets/library/textures/lut/cinematic_warm.png" id="22_luttex"]
+[ext_resource type="ArrayMesh" path="res://scenes/tests/terrain_patch.mesh" id="301_terrain"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_grass"]
+albedo_texture = ExtResource("1_tex")
+normal_texture = ExtResource("2_tex")
+roughness_texture = ExtResource("3_tex")
+ao_texture = ExtResource("4_tex")
+uv1_scale = Vector3(8, 8, 1)
+roughness = 1.0
+texture_filter = 6
+
+[sub_resource type="StandardMaterial3D" id="Mat_dirt"]
+albedo_texture = ExtResource("5_tex")
+normal_texture = ExtResource("6_tex")
+roughness_texture = ExtResource("7_tex")
+ao_texture = ExtResource("8_tex")
+uv1_scale = Vector3(1, 8, 1)
+roughness = 1.0
+texture_filter = 6
+
+[sub_resource type="StandardMaterial3D" id="Mat_stone"]
+albedo_texture = ExtResource("9_tex")
+normal_texture = ExtResource("10_tex")
+roughness_texture = ExtResource("11_tex")
+ao_texture = ExtResource("12_tex")
+uv1_scale = Vector3(2, 1, 1)
+roughness = 1.0
+texture_filter = 6
+
+[sub_resource type="StandardMaterial3D" id="Mat_wood"]
+albedo_texture = ExtResource("13_tex")
+normal_texture = ExtResource("14_tex")
+roughness_texture = ExtResource("15_tex")
+ao_texture = ExtResource("16_tex")
+uv1_scale = Vector3(1, 1, 1)
+roughness = 1.0
+texture_filter = 6
+
+[sub_resource type="StandardMaterial3D" id="Mat_roof"]
+albedo_texture = ExtResource("17_tex")
+normal_texture = ExtResource("18_tex")
+roughness_texture = ExtResource("19_tex")
+uv1_scale = Vector3(2, 2, 1)
+roughness = 1.0
+texture_filter = 6
+
+[sub_resource type="StandardMaterial3D" id="Mat_standin"]
+albedo_color = Color(0.72, 0.22, 0.22, 1)
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_skin"]
+albedo_color = Color(0.96, 0.78, 0.62, 1)
+roughness = 0.6
+
+[sub_resource type="ShaderMaterial" id="SkyMat"]
+shader = ExtResource("102_sky")
+shader_parameter/sun_direction = Vector3(-0.574, 0.346, 0.742)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+ambient_light_energy = 0.7
+tonemap_mode = 0
+adjustment_enabled = true
+adjustment_brightness = 1.02
+adjustment_contrast = 1.08
+adjustment_saturation = 1.12
+
+[sub_resource type="ShaderMaterial" id="WaterMat"]
+shader = ExtResource("101_water")
+shader_parameter/sun_direction = Vector3(-0.574, 0.346, 0.742)
+shader_parameter/use_depth_fade = 0
+
+[sub_resource type="PlaneMesh" id="Mesh_ground"]
+size = Vector2(48, 48)
+
+[sub_resource type="PlaneMesh" id="Mesh_path"]
+size = Vector2(3.5, 48)
+
+[sub_resource type="BoxMesh" id="Mesh_wall"]
+size = Vector3(6, 2.2, 0.6)
+
+[sub_resource type="BoxMesh" id="Mesh_crate"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_roof"]
+size = Vector3(3, 0.15, 2.5)
+
+[sub_resource type="PlaneMesh" id="Mesh_water"]
+size = Vector2(7, 7)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="CapsuleMesh" id="Mesh_body"]
+radius = 0.35
+height = 1.7
+
+[sub_resource type="SphereMesh" id="Mesh_head"]
+radius = 0.28
+height = 0.56
+
+[sub_resource type="ShaderMaterial" id="SplatMat"]
+shader = ExtResource("103_splat")
+shader_parameter/grass_albedo = ExtResource("1_tex")
+shader_parameter/grass_normal = ExtResource("2_tex")
+shader_parameter/grass_rough = ExtResource("3_tex")
+shader_parameter/dirt_albedo = ExtResource("5_tex")
+shader_parameter/dirt_normal = ExtResource("6_tex")
+shader_parameter/dirt_rough = ExtResource("7_tex")
+shader_parameter/stone_albedo = ExtResource("9_tex")
+shader_parameter/stone_normal = ExtResource("10_tex")
+shader_parameter/stone_rough = ExtResource("11_tex")
+
+[sub_resource type="ShaderMaterial" id="WindMatFoliage"]
+shader = ExtResource("104_wind")
+shader_parameter/color = Color(0.22, 0.5, 0.24, 1)
+shader_parameter/sway_height = 2.6
+shader_parameter/use_alpha = 0
+
+[sub_resource type="ShaderMaterial" id="WindMatTrunk"]
+shader = ExtResource("104_wind")
+shader_parameter/color = Color(0.42, 0.3, 0.18, 1)
+shader_parameter/sway_height = 2.6
+shader_parameter/use_alpha = 0
+
+[sub_resource type="ShaderMaterial" id="WindMatGrass"]
+shader = ExtResource("104_wind")
+shader_parameter/color = Color(0.3, 0.62, 0.28, 1)
+shader_parameter/sway_height = 0.7
+shader_parameter/use_alpha = 1
+shader_parameter/alpha_tex = ExtResource("20_grass")
+
+[sub_resource type="ShaderMaterial" id="ShaftMat"]
+shader = ExtResource("105_shaft")
+shader_parameter/gradient_tex = ExtResource("21_shafttex")
+shader_parameter/intensity = 0.12
+
+[sub_resource type="ShaderMaterial" id="CloudMat"]
+shader = ExtResource("106_cloud")
+shader_parameter/cloud_speed = 0.02
+shader_parameter/cloud_coverage = 0.45
+shader_parameter/shadow_strength = 0.32
+
+[sub_resource type="ShaderMaterial" id="LutMat"]
+shader = ExtResource("107_lut")
+shader_parameter/lut_tex = ExtResource("22_luttex")
+shader_parameter/strength = 1.0
+
+[sub_resource type="StandardMaterial3D" id="BasinMat"]
+albedo_texture = ExtResource("5_tex")
+normal_texture = ExtResource("6_tex")
+roughness_texture = ExtResource("7_tex")
+ao_texture = ExtResource("8_tex")
+uv1_scale = Vector3(2, 2, 1)
+roughness = 1.0
+cull_mode = 2
+
+[sub_resource type="PlaneMesh" id="Mesh_groundA"]
+size = Vector2(26, 48)
+
+[sub_resource type="PlaneMesh" id="Mesh_groundB"]
+size = Vector2(15, 48)
+
+[sub_resource type="PlaneMesh" id="Mesh_groundC"]
+size = Vector2(7, 25)
+
+[sub_resource type="PlaneMesh" id="Mesh_groundD"]
+size = Vector2(7, 16)
+
+[sub_resource type="PlaneMesh" id="Mesh_cloud"]
+size = Vector2(48, 48)
+
+[sub_resource type="QuadMesh" id="Mesh_shaft"]
+size = Vector2(1.6, 6)
+
+[sub_resource type="QuadMesh" id="Mesh_grass"]
+size = Vector2(0.7, 0.7)
+
+[sub_resource type="CylinderMesh" id="Mesh_basin"]
+top_radius = 5.0
+bottom_radius = 3.0
+height = 0.7
+radial_segments = 48
+
+[sub_resource type="CylinderMesh" id="Mesh_trunk"]
+top_radius = 0.12
+bottom_radius = 0.18
+height = 0.8
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="Mesh_cone1"]
+top_radius = 0.0
+bottom_radius = 0.95
+height = 1.3
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="Mesh_cone2"]
+top_radius = 0.0
+bottom_radius = 0.7
+height = 1.1
+radial_segments = 16
+
+[node name="GraphicsShowcase" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.4363, -0.6109, 0)
+light_color = Color(1, 0.92, 0.78, 1)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="GroundA" type="MeshInstance3D" parent="."]
+position = Vector3(-11, 0, 0)
+mesh = SubResource("Mesh_groundA")
+surface_material_override/0 = SubResource("Mat_grass")
+
+[node name="GroundB" type="MeshInstance3D" parent="."]
+position = Vector3(16.5, 0, 0)
+mesh = SubResource("Mesh_groundB")
+surface_material_override/0 = SubResource("Mat_grass")
+
+[node name="GroundC" type="MeshInstance3D" parent="."]
+position = Vector3(5.5, 0, -11.5)
+mesh = SubResource("Mesh_groundC")
+surface_material_override/0 = SubResource("Mat_grass")
+
+[node name="GroundD" type="MeshInstance3D" parent="."]
+position = Vector3(5.5, 0, 16)
+mesh = SubResource("Mesh_groundD")
+surface_material_override/0 = SubResource("Mat_grass")
+[node name="DirtPath" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, 0)
+mesh = SubResource("Mesh_path")
+surface_material_override/0 = SubResource("Mat_dirt")
+
+[node name="StoneWall" type="MeshInstance3D" parent="."]
+position = Vector3(-6, 1.1, -8)
+mesh = SubResource("Mesh_wall")
+surface_material_override/0 = SubResource("Mat_stone")
+
+[node name="WoodCrate" type="MeshInstance3D" parent="."]
+position = Vector3(4.5, 0.5, -3)
+mesh = SubResource("Mesh_crate")
+surface_material_override/0 = SubResource("Mat_wood")
+
+[node name="RoofSlab" type="MeshInstance3D" parent="."]
+position = Vector3(-4.2, 1.0, -8)
+rotation = Vector3(0, 0, 0.6109)
+mesh = SubResource("Mesh_roof")
+surface_material_override/0 = SubResource("Mat_roof")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+position = Vector3(5.5, 0.06, 4.5)
+mesh = SubResource("Mesh_water")
+surface_material_override/0 = SubResource("WaterMat")
+
+[node name="House" parent="." instance=ExtResource("201_house")]
+position = Vector3(-8, 0, 3)
+rotation = Vector3(0, 0.5236, 0)
+
+[node name="Barrel" parent="." instance=ExtResource("202_barrel")]
+position = Vector3(3.5, 0, -4.5)
+
+[node name="CrateProp" parent="." instance=ExtResource("203_crate")]
+position = Vector3(4.2, 0, -5.2)
+
+[node name="Tree" parent="." instance=ExtResource("204_tree")]
+position = Vector3(-3, 0, 6)
+
+[node name="Flower" parent="." instance=ExtResource("205_flower")]
+position = Vector3(2, 0, 6.5)
+scale = Vector3(2, 2, 2)
+
+[node name="StandInBody" type="MeshInstance3D" parent="."]
+position = Vector3(0.5, 0.85, 2.5)
+mesh = SubResource("Mesh_body")
+surface_material_override/0 = SubResource("Mat_standin")
+
+[node name="StandInHead" type="MeshInstance3D" parent="."]
+position = Vector3(0.5, 1.95, 2.5)
+mesh = SubResource("Mesh_head")
+surface_material_override/0 = SubResource("Mat_skin")
+
+[node name="CamPBR" type="Camera3D" parent="."]
+position = Vector3(-6.5, 4, 9.5)
+rotation = Vector3(-0.2985, -0.5543, 0)
+fov = 55.0
+current = true
+
+[node name="CamWater" type="Camera3D" parent="."]
+position = Vector3(12, 1.6, -4)
+rotation = Vector3(0.0794, 2.3562, 0)
+fov = 55.0
+
+[node name="CamTrees" type="Camera3D" parent="."]
+position = Vector3(-2, 2.2, 13)
+rotation = Vector3(-0.15, 0.84, 0)
+fov = 55.0
+
+
+[node name="TerrainPatch" type="MeshInstance3D" parent="."]
+position = Vector3(-8, 0, -16)
+mesh = ExtResource("301_terrain")
+surface_material_override/0 = SubResource("SplatMat")
+
+[node name="CloudShadow" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.9, 0)
+mesh = SubResource("Mesh_cloud")
+surface_material_override/0 = SubResource("CloudMat")
+
+[node name="Basin" type="MeshInstance3D" parent="."]
+position = Vector3(5.5, -0.33, 4.5)
+mesh = SubResource("Mesh_basin")
+surface_material_override/0 = SubResource("BasinMat")
+
+[node name="ProbePond" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.2, 4.5)
+update_mode = 0
+size = Vector3(12, 6, 12)
+
+[node name="ProbeWall" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, -7)
+update_mode = 0
+size = Vector3(10, 6, 10)
+
+[node name="LightmapGI" type="LightmapGI" parent="."]
+bake_quality = 0
+bounces = 1
+
+[node name="LUTGrade" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="LUTRect" type="ColorRect" parent="LUTGrade"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+material = SubResource("LutMat")
+[node name="WindTree1" type="Node3D" parent="."]
+position = Vector3(-10, 0, 8)
+
+[node name="Trunk" type="MeshInstance3D" parent="WindTree1"]
+position = Vector3(0, 0.4, 0)
+mesh = SubResource("Mesh_trunk")
+surface_material_override/0 = SubResource("WindMatTrunk")
+
+[node name="Foliage1" type="MeshInstance3D" parent="WindTree1"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("Mesh_cone1")
+surface_material_override/0 = SubResource("WindMatFoliage")
+
+[node name="Foliage2" type="MeshInstance3D" parent="WindTree1"]
+position = Vector3(0, 2.15, 0)
+mesh = SubResource("Mesh_cone2")
+surface_material_override/0 = SubResource("WindMatFoliage")
+
+[node name="WindTree2" type="Node3D" parent="."]
+position = Vector3(-14, 0, 2)
+
+[node name="Trunk" type="MeshInstance3D" parent="WindTree2"]
+position = Vector3(0, 0.4, 0)
+mesh = SubResource("Mesh_trunk")
+surface_material_override/0 = SubResource("WindMatTrunk")
+
+[node name="Foliage1" type="MeshInstance3D" parent="WindTree2"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("Mesh_cone1")
+surface_material_override/0 = SubResource("WindMatFoliage")
+
+[node name="Foliage2" type="MeshInstance3D" parent="WindTree2"]
+position = Vector3(0, 2.15, 0)
+mesh = SubResource("Mesh_cone2")
+surface_material_override/0 = SubResource("WindMatFoliage")
+
+[node name="WindTree3" type="Node3D" parent="."]
+position = Vector3(12, 0, 8)
+
+[node name="Trunk" type="MeshInstance3D" parent="WindTree3"]
+position = Vector3(0, 0.4, 0)
+mesh = SubResource("Mesh_trunk")
+surface_material_override/0 = SubResource("WindMatTrunk")
+
+[node name="Foliage1" type="MeshInstance3D" parent="WindTree3"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("Mesh_cone1")
+surface_material_override/0 = SubResource("WindMatFoliage")
+
+[node name="Foliage2" type="MeshInstance3D" parent="WindTree3"]
+position = Vector3(0, 2.15, 0)
+mesh = SubResource("Mesh_cone2")
+surface_material_override/0 = SubResource("WindMatFoliage")
+
+[node name="GrassTuft1" type="Node3D" parent="."]
+position = Vector3(-2, 0, 8)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft1"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft1"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="GrassTuft2" type="Node3D" parent="."]
+position = Vector3(3, 0, 9)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft2"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft2"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="GrassTuft3" type="Node3D" parent="."]
+position = Vector3(-12, 0, -2)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft3"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft3"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="GrassTuft4" type="Node3D" parent="."]
+position = Vector3(8, 0, -6)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft4"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft4"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="GrassTuft5" type="Node3D" parent="."]
+position = Vector3(-5, 0, 12)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft5"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft5"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="GrassTuft6" type="Node3D" parent="."]
+position = Vector3(10, 0, 12)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft6"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft6"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="GrassTuft7" type="Node3D" parent="."]
+position = Vector3(-3.5, 0, -4)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft7"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft7"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="GrassTuft8" type="Node3D" parent="."]
+position = Vector3(6, 0, 10)
+
+[node name="BladeA" type="MeshInstance3D" parent="GrassTuft8"]
+position = Vector3(0, 0.35, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+[node name="BladeB" type="MeshInstance3D" parent="GrassTuft8"]
+position = Vector3(0, 0.35, 0)
+rotation = Vector3(0, 1.5708, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("WindMatGrass")
+
+
+[node name="Shaft1" type="MeshInstance3D" parent="."]
+position = Vector3(-2, 3, -2)
+rotation = Vector3(0, -0.55, 0)
+mesh = SubResource("Mesh_shaft")
+surface_material_override/0 = SubResource("ShaftMat")
+
+[node name="Shaft2" type="MeshInstance3D" parent="."]
+position = Vector3(1, 3, -5)
+rotation = Vector3(0, -0.55, 0)
+mesh = SubResource("Mesh_shaft")
+surface_material_override/0 = SubResource("ShaftMat")
+
+[node name="Shaft3" type="MeshInstance3D" parent="."]
+position = Vector3(3.5, 3, -1)
+rotation = Vector3(0, -0.55, 0)
+mesh = SubResource("Mesh_shaft")
+surface_material_override/0 = SubResource("ShaftMat")

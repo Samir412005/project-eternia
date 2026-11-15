@@ -1,0 +1,26 @@
+{
+  "first_light": {
+    "title": "First Light",
+    "description": "Reach the Ancient Shrine in the valley and receive its blessing.",
+    "objectives": ["Reach the Ancient Shrine", "Receive the shrine blessing"],
+    "reward_xp": 50
+  },
+  "dummy_drill": {
+    "title": "Dummy Drill",
+    "description": "Defeat the training dummy near the valley centre.",
+    "objectives": ["Defeat the training dummy"],
+    "reward_xp": 25
+  },
+  "valley_scout": {
+    "title": "Valley Scout",
+    "description": "Stand on the north platform and look over the valley. (Exploration placeholder for Phase 2.)",
+    "objectives": ["Reach the north platform"],
+    "reward_xp": 20
+  },
+  "golem_quest": {
+    "title": "Golem in the Clearing",
+    "description": "Defeat the rock golem in the forest clearing beyond the village.",
+    "objectives": ["Defeat the rock golem"],
+    "reward_xp": 100
+  }
+}

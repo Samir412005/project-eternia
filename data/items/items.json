@@ -1,0 +1,6 @@
+{
+  "health_potion": {"name": "Health Potion", "type": "consumable", "heal": 40},
+  "old_coin": {"name": "Old Coin", "type": "currency", "value": 1},
+  "iron_sword": {"name": "Iron Sword", "type": "weapon", "attack": 8},
+  "leather_armor": {"name": "Leather Armor", "type": "armor", "defense": 4}
+}

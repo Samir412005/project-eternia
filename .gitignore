@@ -1,0 +1,6 @@
+.godot/
+*.apk
+*.idsig
+reports/
+docs/
+screenshots-aetheria/*.import

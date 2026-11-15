@@ -1,0 +1,7 @@
+{
+  "id": "ashan",
+  "name": "Ashan",
+  "title": "Warden of the Valley",
+  "note": "PROPOSAL ONLY - the final hero identity is not decided. See GAME_DESIGN.md.",
+  "base_stats": {"strength": 10, "agility": 10, "intelligence": 10, "vitality": 10}
+}
