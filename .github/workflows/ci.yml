@@ -66,8 +66,13 @@ jobs:
       - name: Headless import (gate 1)
         run: |
           set -euo pipefail
-          # The project import is known to stall locally; fail loudly
-          # on a stall instead of hanging the job forever.
+          # First import on a fresh checkout trips on editor-plugin icon
+          # preloads (Beehave tree.svg etc.) because .godot/ cache does
+          # not exist yet — those SCRIPT ERRORs are not game-code errors.
+          # Warm-up pass builds the cache (unchecked); the checked pass
+          # below must be clean.
+          timeout 600 godot --headless --path . --import 2>&1 \
+            | tee import-warmup.log || true
           timeout 600 godot --headless --path . --import 2>&1 \
             | tee import.log
           if grep -q "SCRIPT ERROR" import.log; then
