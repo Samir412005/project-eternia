@@ -108,8 +108,8 @@ jobs:
       - name: Set up Android SDK 34
         uses: android-actions/setup-android@v3
         with:
-          api-level: ${{ env.ANDROID_API }}
-          build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
+          accept-android-sdk-licenses: true
+          packages: platform-tools platforms;android-${{ env.ANDROID_API }} build-tools;${{ env.ANDROID_BUILD_TOOLS }}
 
       - name: Install Godot 4.3 + export templates
         run: |
