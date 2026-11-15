@@ -1,0 +1,143 @@
+# PROJECT ETERNIA — CI pipeline (2026-11-15)
+#
+# Remote: Samir412005/project-eternia (public, created 2026-11-15).
+# Runs on push to main / aetheria-slice. Public-repo Actions minutes are free.
+#
+# What it does (mirrors tools/studio/verify_gate.sh, gates 1-4):
+#   1. headless import check — 0 SCRIPT ERRORs
+#   2. gdUnit4 headless tests — exit 0, no FAILED
+#   3. Android debug APK export (Godot 4.3, JDK 17, Android SDK 34)
+#   4. apksigner verify -v — v1+v2+v3, 1 signer (debug keystore)
+#
+# Known limits (same as the local gate):
+#   - UPDATE 2026-11-15 ~12:35 CET: the old full-project import STALL is
+#     FIXED (it was the ProtonScatter demos .blend file; the demos folder
+#     was deleted). Local dry-run on 2026-11-15: `godot --headless --path .
+#     --import` exits 0 in ~26 s with 0 SCRIPT ERRORs. The 600 s timeout
+#     stays as a safety net only.
+#   - The APK is a DEBUG build (debug keystore). A release build needs
+#     a real signing key stored as a GitHub secret — never committed.
+#   - No phone test runs here: FPS/install on the Galaxy A16 is still
+#     a human step (the user).
+#   - gdUnit invocation mirrors tools/studio/verify_gate.sh exactly:
+#     `-s addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode
+#     -a tests/gdunit` (the script path is case-sensitive; the
+#     lowercase `gdUnitCmdTool.gd` + `-a res://test` variant does NOT
+#     exist and fails with "File not found").
+
+name: Eternia CI
+
+on:
+  push:
+    branches: [aetheria-slice, main]
+  pull_request:
+    branches: [aetheria-slice, main]
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.3"
+  GODOT_BIN: godot
+  ANDROID_API: "34"
+  ANDROID_BUILD_TOOLS: "34.0.0"
+
+jobs:
+  verify:
+    name: Import + gdUnit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.3 + export templates
+        run: |
+          set -euo pipefail
+          curl -sL -o godot.zip \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          chmod +x "Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          curl -sL -o templates.tpz \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q templates.tpz -d /tmp/templates
+          mv /tmp/templates/templates/* \
+            ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+          godot --version
+
+      - name: Headless import (gate 1)
+        run: |
+          set -euo pipefail
+          # The project import is known to stall locally; fail loudly
+          # on a stall instead of hanging the job forever.
+          timeout 600 godot --headless --path . --import 2>&1 \
+            | tee import.log
+          if grep -q "SCRIPT ERROR" import.log; then
+            echo "FAIL: script errors during import"; exit 1
+          fi
+
+      - name: gdUnit4 headless tests (gate 2)
+        run: |
+          set -euo pipefail
+          timeout 300 godot --headless --path . \
+            -s addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode \
+            -a tests/gdunit 2>&1 | tee gdunit.log
+          test "${PIPESTATUS[0]}" -eq 0
+          ! grep -qi "failed" gdunit.log
+
+  android:
+    name: Android debug APK
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK 34
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: ${{ env.ANDROID_API }}
+          build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
+
+      - name: Install Godot 4.3 + export templates
+        run: |
+          set -euo pipefail
+          curl -sL -o godot.zip \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          chmod +x "Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          curl -sL -o templates.tpz \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q templates.tpz -d /tmp/templates
+          mv /tmp/templates/templates/* \
+            ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+
+      - name: Export Android APK (gate 4)
+        run: |
+          set -euo pipefail
+          mkdir -p builds/android
+          godot --headless --path . --export-debug "Android Mobile" \
+            builds/android/project-eternia-debug.apk
+          ls -la builds/android/
+
+      - name: Verify APK signature
+        run: |
+          set -euo pipefail
+          "$ANDROID_HOME/build-tools/${ANDROID_BUILD_TOOLS}/apksigner" \
+            verify -v builds/android/project-eternia-debug.apk \
+            | tee apksigner.log
+          grep -q "Verified using v1 scheme (APK Signature Scheme v1): true" apksigner.log
+          grep -q "Verified using v2 scheme (APK Signature Scheme v2): true" apksigner.log
+          grep -q "Verified using v3 scheme (APK Signature Scheme v3): true" apksigner.log
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-eternia-debug-apk
+          path: builds/android/project-eternia-debug.apk
+          retention-days: 14
