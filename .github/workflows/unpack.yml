@@ -1,0 +1,27 @@
+name: Unpack snapshot
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack snapshot zips
+        run: |
+          unzip -o project-eternia-part1.zip
+          unzip -o project-eternia-part2.zip
+          rm project-eternia-part1.zip project-eternia-part2.zip
+          rm .github/workflows/unpack.yml
+          echo "--- top level ---"
+          ls -la
+          echo "--- tracked file count ---"
+          git status --short | wc -l
+      - name: Commit unpacked files
+        run: |
+          git config user.name "Muse"
+          git config user.email "muse@local"
+          git add -A
+          git commit -m "Unpack project snapshot (Aetheria slice, 1436 files)" || echo "nothing to commit"
+          git push
