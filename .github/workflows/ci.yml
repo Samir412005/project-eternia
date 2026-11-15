@@ -130,8 +130,24 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p builds/android
-          godot --headless --path . --export-debug "Android Mobile" \
-            builds/android/project-eternia-debug.apk
+          # Godot 4.3's headless export can abort with SIGABRT (exit 134)
+          # on a threading race — seen locally (post-export teardown) and
+          # in CI run 5 (during "Adding files"). Retry up to 3 times; a
+          # crashed attempt leaves a partial APK the next attempt
+          # overwrites.
+          for attempt in 1 2 3; do
+            echo "Export attempt $attempt"
+            if godot --headless --path . --export-debug "Android Mobile" \
+              builds/android/project-eternia-debug.apk; then
+              echo "Export succeeded on attempt $attempt"
+              break
+            fi
+            echo "Export attempt $attempt failed"
+            if [ "$attempt" = 3 ]; then
+              echo "FAIL: export failed 3 times"; exit 1
+            fi
+            sleep 5
+          done
           ls -la builds/android/
 
       - name: Verify APK signature
