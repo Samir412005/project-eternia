@@ -3,7 +3,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-  workflows: write
 jobs:
   unpack:
     runs-on: ubuntu-latest
@@ -14,7 +13,7 @@ jobs:
           unzip -o project-eternia-part1.zip
           unzip -o project-eternia-part2.zip
           rm project-eternia-part1.zip project-eternia-part2.zip
-          rm .github/workflows/unpack.yml
+          rm .github/workflows/ci.yml
           echo "--- top level ---"
           ls -la
           echo "--- tracked file count ---"
@@ -24,5 +23,5 @@ jobs:
           git config user.name "Muse"
           git config user.email "muse@local"
           git add -A
-          git commit -m "Unpack project snapshot (Aetheria slice, 1436 files)" || echo "nothing to commit"
+          git commit -m "Unpack project snapshot (Aetheria slice, without ci.yml)" || echo "nothing to commit"
           git push
